@@ -13,8 +13,8 @@ Recursive Multi-Agent Systems
 
 ## 📰 News
 
-- **[2026.04.28]** RecursiveMAS paper released! [Code](https://github.com/RecursiveMAS/RecursiveMAS) and [Checkpoints](https://huggingface.co/RecursiveMAS/models) are available now!
-- **[2026.04.28]** Project page is available at [recursivemas.github.io](https://recursivemas.github.io).
+- **[2026.04.28]** RecursiveMAS paper released! [Code](https://github.com/RecursiveMAS/RecursiveMAS) and [checkpoints](https://huggingface.co/RecursiveMAS/models) are now available!
+- **[2026.04.28]** The project page is available at [recursivemas.github.io](https://recursivemas.github.io).
 
 ## 🌟 Introduction
 
