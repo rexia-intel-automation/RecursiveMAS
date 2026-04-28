@@ -2,7 +2,7 @@ from dataclasses import dataclass
 import re
 from typing import Optional
 
-from release_code.inference_utils.reflector_tool_notes import system_prompt as REFLECTOR_TOOL_SYSTEM_PROMPT
+from inference_utils.reflector_tool_notes import system_prompt as REFLECTOR_TOOL_SYSTEM_PROMPT
 
 SYSTEM_PROMPT = "You are a helpful assistant."
 DELIBERATION_SYSTEM_PROMPT = REFLECTOR_TOOL_SYSTEM_PROMPT

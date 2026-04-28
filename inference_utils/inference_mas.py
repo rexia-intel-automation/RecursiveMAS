@@ -45,7 +45,7 @@ from .answer_utils import (
     strip_choice_instruction_lines,
     truncate_text_chars,
 )
-from release_code.prompts import (
+from prompts import (
     FEEDBACK_SLOT,
     PLANNER_SLOT,
     REFINED_SLOT,
@@ -77,7 +77,7 @@ from .lcb_utils import (
     load_release_v6_records,
 )
 
-from release_code.modeling import (
+from modeling import (
     Adapter,
     CrossModelAdapter,
     infer_inner_adapter_type_from_state_dict,

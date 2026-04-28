@@ -23,7 +23,7 @@ from .lcb_utils import (
     is_code_eval_dataset,
     is_mbppplus_dataset,
 )
-from release_code.prompts import (
+from prompts import (
     DELIBERATION_FEEDBACK_SLOT,
     DELIBERATION_REFLECTOR_SLOT,
     build_deliberation_reflector_prompt,

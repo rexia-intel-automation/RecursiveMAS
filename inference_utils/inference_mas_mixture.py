@@ -9,7 +9,7 @@ from tqdm import tqdm
 
 from . import inference_mas as base
 from .lcb_utils import clean_raw_output, evaluate_generated_code, extract_python_code, is_code_eval_dataset, is_mbppplus_dataset
-from release_code.prompts import (
+from prompts import (
     HIE_CODE_EXPERT_SLOT,
     HIE_FEEDBACK_SLOT,
     HIE_MATH_EXPERT_SLOT,

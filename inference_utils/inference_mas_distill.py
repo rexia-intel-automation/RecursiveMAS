@@ -16,7 +16,7 @@ from .lcb_utils import (
     is_code_eval_dataset,
     is_mbppplus_dataset,
 )
-from release_code.prompts import (
+from prompts import (
     DISTILL_EXPERT_SLOT,
     DISTILL_FEEDBACK_SLOT,
     build_distill_expert_prompt,
