@@ -149,13 +149,13 @@ We provide Sequential-style RecursiveMAS under both lightweight and scaled setti
 
 - **Sequential-style (Light)** uses lightweight agents for efficient recursive collaboration.
 ```bash
-python run.py --style sequential_light --dataset math500 --seed 42 --batch_size 16 --temperature 0.6 --top_p 0.95 --trust_remote_code 1 --device cuda
+python run.py --style sequential_light --batch_size 16 --temperature 0.6 --top_p 0.95 --dataset math500 --seed 42 --trust_remote_code 1 --device cuda
 ```
 
 
 - **Sequential-style (Scaled)** uses stronger LLM agents to further improve reasoning performance.
 ```bash
-python run.py --style sequential_scaled --dataset math500 --seed 42 --batch_size 16 --temperature 0.6 --top_p 0.95 --trust_remote_code 1 --device cuda
+python run.py --style sequential_scaled --batch_size 16 --temperature 0.6 --top_p 0.95 --dataset math500 --seed 42 --trust_remote_code 1 --device cuda
 ```
 ---
 
@@ -165,17 +165,17 @@ RecursiveMAS can also be adapted to different MAS collaboration patterns beyond 
 
 - **Mixture-style RecursiveMAS** coordinates multiple domain-specialized agents and aggregates their information through a summarizer.
 ```bash
-python run.py --style mixture --dataset math500 --seed 42 --batch_size 16 --temperature 0.6 --top_p 0.95 --trust_remote_code 1 --device cuda
+python run.py --style mixture --batch_size 16 --temperature 0.6 --top_p 0.95 --dataset math500 --seed 42 --trust_remote_code 1 --device cuda
 ```
 
 - **Distillation-style RecursiveMAS** enables a larger Expert and a smaller Learner to interact recursively, improving the Learner while retaining better efficiency.
 ```bash
-python run.py --style distillation --dataset math500 --seed 42 --batch_size 16 --temperature 0.6 --top_p 0.95 --trust_remote_code 1 --device cuda
+python run.py --style distillation --batch_size 16 --temperature 0.6 --top_p 0.95 --dataset math500 --seed 42 --trust_remote_code 1 --device cuda
 ```
 
 - **Deliberation-style RecursiveMAS** supports recursive coordination between a Reflector and a Tool-Caller for tool-integrated reasoning.
 ```bash
-python run.py --style deliberation --dataset math500 --seed 42 --batch_size 16 --temperature 0.6 --top_p 0.95 --trust_remote_code 1 --device cuda
+python run.py --style deliberation --batch_size 16 --temperature 0.6 --top_p 0.95 --dataset math500 --seed 42 --trust_remote_code 1 --device cuda
 ```
 
 ---
