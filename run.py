@@ -302,6 +302,7 @@ def main() -> int:
         )
         metric_name, metric_value, _ = run_module(module, cli)
         results.append((latent_steps, metric_name, metric_value))
+
         print(f"  {metric_name}={metric_value:.2f}%")
 
     best_ls, best_metric_name, best_metric_value = max(results, key=lambda x: x[2])

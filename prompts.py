@@ -655,3 +655,4 @@ def build_math_prompt_bundle(
             mas_shape=mas_shape,
         ).replace(REFINED_SLOT, refined_output),
     )
+

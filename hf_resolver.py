@@ -7,6 +7,7 @@ from typing import Dict, Optional
 from huggingface_hub import snapshot_download
 
 
+
 def snapshot_repo(repo_id: str) -> Path:
     resolved = snapshot_download(
         repo_id=repo_id,
