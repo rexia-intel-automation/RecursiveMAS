@@ -200,9 +200,10 @@ We welcome discussions and contributions to RecursiveMAS. If you would like to s
 --- -->
 
 ## 📚 Citation
-
+```text
 @article{recursivemas,
   title={Recursive Multi-Agent Systems},
   author={Yang, Xiyuan and Zou, Jiaru and Pan, Rui and Qiu, Ruizhong and Lu, Pan and Diao, Shizhe and Jiang, Jindong and Tong, Hanghang and Zhang, Tong and Buehler, Markus J. and He, Jingrui and Zou, James},
   year={2026}
 }
+```
