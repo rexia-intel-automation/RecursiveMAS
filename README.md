@@ -13,12 +13,12 @@ Recursive Multi-Agent Systems
 
 ## 📰 News
 
-- **[2026.04.28]** RecursiveMAS paper released! [Code](https://github.com/RecursiveMAS/RecursiveMAS) and [Checkpoints](https://huggingface.co/RecursiveMAS/models) are available now!
-- **[2026.04.28]** Project page is available at [recursivemas.github.io](https://recursivemas.github.io).
+- **[2026.04.28]** RecursiveMAS paper released! [Code](https://github.com/RecursiveMAS/RecursiveMAS) and [checkpoints](https://huggingface.co/RecursiveMAS/models) are now available!
+- **[2026.04.28]** The project page is available at [recursivemas.github.io](https://recursivemas.github.io).
 
 ## 🌟 Introduction
 
-**RecursiveMAS** is a recursive multi-agent framework that scales agent collaboration through **latent-space recursion**.
+**RecursiveMAS** is a multi-agent framework that scales agent collaboration through **latent-space recursion**.
 
 Instead of treating each LLM agent as an isolated module, RecursiveMAS casts the entire multi-agent system as a **unified recursive computation**. Heterogeneous agents are connected through lightweight RecursiveLink modules, allowing agents to iteratively exchange, refine, and evolve their latent states across recursion rounds.
 
@@ -149,13 +149,13 @@ We provide Sequential-style RecursiveMAS under both lightweight and scaled setti
 
 - **Sequential-style (Light)** uses lightweight agents for efficient recursive collaboration.
 ```bash
-python run.py --style sequential_light --dataset math500 --seed 42 --batch_size 16 --temperature 0.6 --top_p 0.95 --trust_remote_code 1 --device cuda
+python run.py --style sequential_light --batch_size 16 --temperature 0.6 --top_p 0.95 --dataset math500 --seed 42 --trust_remote_code 1 --device cuda
 ```
 
 
 - **Sequential-style (Scaled)** uses stronger LLM agents to further improve reasoning performance.
 ```bash
-python run.py --style sequential_scaled --dataset math500 --seed 42 --batch_size 16 --temperature 0.6 --top_p 0.95 --trust_remote_code 1 --device cuda
+python run.py --style sequential_scaled --batch_size 16 --temperature 0.6 --top_p 0.95 --dataset math500 --seed 42 --trust_remote_code 1 --device cuda
 ```
 ---
 
@@ -165,17 +165,17 @@ RecursiveMAS can also be adapted to different MAS collaboration patterns beyond 
 
 - **Mixture-style RecursiveMAS** coordinates multiple domain-specialized agents and aggregates their information through a summarizer.
 ```bash
-python run.py --style mixture --dataset math500 --seed 42 --batch_size 16 --temperature 0.6 --top_p 0.95 --trust_remote_code 1 --device cuda
+python run.py --style mixture --batch_size 16 --temperature 0.6 --top_p 0.95 --dataset math500 --seed 42 --trust_remote_code 1 --device cuda
 ```
 
 - **Distillation-style RecursiveMAS** enables a larger Expert and a smaller Learner to interact recursively, improving the Learner while retaining better efficiency.
 ```bash
-python run.py --style distillation --dataset math500 --seed 42 --batch_size 16 --temperature 0.6 --top_p 0.95 --trust_remote_code 1 --device cuda
+python run.py --style distillation --batch_size 16 --temperature 0.6 --top_p 0.95 --dataset math500 --seed 42 --trust_remote_code 1 --device cuda
 ```
 
 - **Deliberation-style RecursiveMAS** supports recursive coordination between a Reflector and a Tool-Caller for tool-integrated reasoning.
 ```bash
-python run.py --style deliberation --dataset math500 --seed 42 --batch_size 16 --temperature 0.6 --top_p 0.95 --trust_remote_code 1 --device cuda
+python run.py --style deliberation --batch_size 16 --temperature 0.6 --top_p 0.95 --dataset math500 --seed 42 --trust_remote_code 1 --device cuda
 ```
 
 ---
@@ -200,9 +200,10 @@ We welcome discussions and contributions to RecursiveMAS. If you would like to s
 --- -->
 
 ## 📚 Citation
-
+```text
 @article{recursivemas,
   title={Recursive Multi-Agent Systems},
   author={Yang, Xiyuan and Zou, Jiaru and Pan, Rui and Qiu, Ruizhong and Lu, Pan and Diao, Shizhe and Jiang, Jindong and Tong, Hanghang and Zhang, Tong and Buehler, Markus J. and He, Jingrui and Zou, James},
   year={2026}
 }
+```
