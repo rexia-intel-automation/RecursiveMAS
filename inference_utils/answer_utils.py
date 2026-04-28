@@ -260,9 +260,6 @@ def extract_gold_answer(text: str, dataset_name: str) -> str:
         return choice if choice is not None else "A"
     if _is_gsm8k_dataset(dataset_name):
         return extract_gsm8k_gold_answer(text)
-    if _is_aime_dataset(dataset_name):
-        candidate = extract_pred_answer(text)
-        return candidate if candidate is not None else text.strip()
     return text.strip()
 
 
@@ -423,7 +420,7 @@ def compare_answers(
             f"choice:{pred_choice.lower()}",
         )
 
-    if _is_math500_dataset(dataset_name) or _is_aime_dataset(dataset_name):
+    if _is_math500_dataset(dataset_name):
         pred_answer = extract_pred_answer(pred_text)
         if pred_answer is None:
             return gold_answer, None, False, "", ""
