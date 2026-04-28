@@ -32,6 +32,7 @@ from inference_utils import (
 
 LATENT_STEPS_SWEEP: Tuple = (16, 32, 48)
 GPQA_DEFAULT_CHOICE_OLD_PROMPT = 2
+MBPPPLUS_TEMPERATURE = 0.2
 
 
 class RunCapture:
@@ -51,6 +52,7 @@ def build_parser() -> argparse.ArgumentParser:
     p.add_argument("--sample_seed", type=int, default=-1)
     p.add_argument("--num_recursive_rounds", type=int, default=3)
     p.add_argument("--batch_size", type=int, default=8)
+    p.add_argument("--latent_length", type=int, default=-1)
     p.add_argument("--temperature", type=float, default=0.6)
     p.add_argument("--top_p", type=float, default=0.95)
     p.add_argument("--top_k", type=int, default=-1)
@@ -71,6 +73,18 @@ def infer_max_new_tokens(style: str, dataset: str) -> int:
             return 1000
         return 2000
     return 4000
+
+
+def infer_temperature(dataset: str, explicit: float) -> float:
+    if dataset.lower() == "mbppplus":
+        return MBPPPLUS_TEMPERATURE
+    return explicit
+
+
+def resolve_latent_steps(explicit: int) -> Tuple[int, ...]:
+    if explicit is not None and explicit > 0:
+        return (explicit,)
+    return LATENT_STEPS_SWEEP
 
 
 def resolve_style_paths(style: str, dataset: str) -> Dict[str, Path]:
@@ -131,6 +145,7 @@ def resolve_style_paths(style: str, dataset: str) -> Dict[str, Path]:
 
 
 def build_common_cli(args: argparse.Namespace, dataset_arg: str, dataset_split: str, latent_steps: int, max_new_tokens: int) -> List[str]:
+    temperature = infer_temperature(args.dataset, args.temperature)
     out = [
         "--dataset", dataset_arg,
         "--dataset_split", dataset_split,
@@ -142,7 +157,7 @@ def build_common_cli(args: argparse.Namespace, dataset_arg: str, dataset_split: 
         "--batch_size", str(args.batch_size),
         "--latent_steps", str(latent_steps),
         "--max_new_tokens", str(max_new_tokens),
-        "--temperature", str(args.temperature),
+        "--temperature", str(temperature),
         "--top_p", str(args.top_p),
         "--top_k", str(args.top_k),
         "--ans_max_new_tokens", "-1",
@@ -285,11 +300,12 @@ def main() -> int:
     dataset_split = infer_dataset_split(args.dataset, args.dataset_split)
     paths = resolve_style_paths(args.style, args.dataset)
     family = str(STYLE_SPECS[args.style]["family"])
+    latent_steps_values = resolve_latent_steps(args.latent_length)
 
     max_new_tokens = infer_max_new_tokens(args.style, args.dataset)
     print(f"[run] style={args.style} dataset={args.dataset} rounds={args.num_recursive_rounds} batch_size={args.batch_size} max_new_tokens={max_new_tokens}")
     results: List[Tuple[int, str, float]] = []
-    for latent_steps in LATENT_STEPS_SWEEP:
+    for latent_steps in latent_steps_values:
         print(f"[latent_steps={latent_steps}]", flush=True)
         module, cli = build_cli_for_style(
             args=args,
