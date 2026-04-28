@@ -11,7 +11,7 @@ Scaling agent collaboration through latent-space recursion.
 
 <p align="center">
     <a href="https://arxiv.org/abs/"><img src="https://img.shields.io/badge/arXiv-2511.20639-B31B1B.svg?logo=arxiv" alt="Arxiv"></a>
-    <a href="https://recursivemas.github.io/"><img src="https://img.shields.io/badge/Website-AgentFlow-E5426E?logo=kashflow" alt="Website"></a>
+    <a href="https://recursivemas.github.io/"><img src="https://img.shields.io/badge/Website-IneqMath-2176BC?logo=GoogleChrome" alt="Website"></a>
 </p>
 
 ---
