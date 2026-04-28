@@ -248,3 +248,4 @@ def summarize_mas_paths(paths: ResolvedMASPaths) -> Dict[str, Dict[str, str]]:
         "inner_adapter_paths": {k: str(v) for k, v in paths.inner_adapter_paths.items()},
         "outer_adapter_paths": {k: str(v) for k, v in paths.outer_adapter_paths.items()},
     }
+

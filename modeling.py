@@ -157,3 +157,4 @@ class CrossModelAdapter(nn.Module):
         out = self.proj2(self.act(self.proj1(h)))
         out = out + self.residual_proj(x)
         return self.ln_target(out)
+
