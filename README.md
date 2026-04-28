@@ -6,7 +6,7 @@
 </p>
 
 <h3 align="center">
-Recursive Multi-Agent Systems
+Scaling agent collaboration through latent-space recursion.
 </h3>
 
 ---
