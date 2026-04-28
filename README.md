@@ -13,8 +13,7 @@ Recursive Multi-Agent Systems
 
 ## 📰 News
 
-- **[2026.04.28]** RecursiveMAS paper released! [Code](https://github.com/RecursiveMAS/RecursiveMAS) and [checkpoints](https://huggingface.co/RecursiveMAS/models) are now available!
-- **[2026.04.28]** The project page is available at [recursivemas.github.io](https://recursivemas.github.io).
+- **[2026.04.28]** RecursiveMAS paper released! The evaluation [code](https://github.com/RecursiveMAS/RecursiveMAS) and [checkpoints](https://huggingface.co/RecursiveMAS/models) are now available. Stay tuned for the overall training pipeline and more features!
 
 ## 🌟 Introduction
 
@@ -24,6 +23,7 @@ Instead of treating each LLM agent as an isolated module, RecursiveMAS casts the
 
 <p align="center">
   <img src="assets/overview.png" width="95%" alt="RecursiveMAS Overview">
+  <img src="assets/learning.png" width="95%" alt="RecursiveMAS Training">
 </p>
 
 ## ✨ Key Features of RecursiveMAS
@@ -80,27 +80,84 @@ Install the required packages:
 pip install -r requirements.txt
 ```
 
-You also need to login to huggingface to download our released checkpoints.
-
-```bash
-huggingface-cli login
-```
-
-Optionally, you may set your Hugging Face cache directory:
-
-```bash
-export HF_HOME=/path/to/your/hf_cache
-export TRANSFORMERS_CACHE=$HF_HOME
-export HF_DATASETS_CACHE=$HF_HOME
-```
-
 ---
+
 
 ## 💥 Quick Start
 
+### 🤖 Load Model Checkpoints
+
+To run RecursiveMAS, you need to download and store the checkpoints for each agent role in the multi-agent system from our Hugging Face release.
+
+The checkpoints are organized by collaboration style. Each collection contains the individual role-specific agent together with their RecursiveLink modules.
+
+### [Sequential-Style (Light) MAS Collection](https://huggingface.co/collections/RecursiveMAS/sequential-style-recursivemas)
+
+| **Model Organization** | **Download** |
+| ---------------------- | ------------ |
+| Sequential-Light-Planner-Qwen3-1.7B | [🤗 HuggingFace](https://huggingface.co/RecursiveMAS/Sequential-Light-Planner-Qwen3-1.7B) |
+| Sequential-Light-Critic-Llama3.2-1B | [🤗 HuggingFace](https://huggingface.co/RecursiveMAS/Sequential-Light-Critic-Llama3.2-1B) |
+| Sequential-Light-Solver-Qwen2.5-Math-1.5B | [🤗 HuggingFace](https://huggingface.co/RecursiveMAS/Sequential-Light-Solver-Qwen2.5-Math-1.5B) |
+| Sequential-Light-Outerlinks | [🤗 HuggingFace](https://huggingface.co/RecursiveMAS/Sequential-Light-Outerlinks) |
+
+### [Sequential-Style (Scaled) MAS Collection](https://huggingface.co/collections/RecursiveMAS/sequential-style-recursivemas)
+
+| **Model Organization** | **Download** |
+| ---------------------- | ------------ |
+| Sequential-Scaled-Planner-Gemma3-4B | [🤗 HuggingFace](https://huggingface.co/RecursiveMAS/Sequential-Scaled-Planner-Gemma3-4B) |
+| Sequential-Scaled-Critic-Llama3.2-3B | [🤗 HuggingFace](https://huggingface.co/RecursiveMAS/Sequential-Scaled-Critic-Llama3.2-3B) |
+| Sequential-Scaled-Solver-Qwen3.5-4B | [🤗 HuggingFace](https://huggingface.co/RecursiveMAS/Sequential-Scaled-Solver-Qwen3.5-4B) |
+| Sequential-Scaled-Outerlinks | [🤗 HuggingFace](https://huggingface.co/RecursiveMAS/Sequential-Scaled-Outerlinks) |
+
+### [Mixture-Style MAS Collection](https://huggingface.co/collections/RecursiveMAS/mixture-style-recursivemas)
+
+| **Model Organization** | **Download** |
+| ---------------------- | ------------ |
+| Mixture-Math-DeepSeek-R1-Distill-Qwen-1.5B | [🤗 HuggingFace](https://huggingface.co/RecursiveMAS/Mixture-Math-DeepSeek-R1-Distill-Qwen-1.5B) |
+| Mixture-Code-Qwen2.5-Coder-3B | [🤗 HuggingFace](https://huggingface.co/RecursiveMAS/Mixture-Code-Qwen2.5-Coder-3B) |
+| Mixture-Science-BioMistral-7B | [🤗 HuggingFace](https://huggingface.co/RecursiveMAS/Mixture-Science-BioMistral-7B) |
+| Mixture-Summarizer-Qwen3.5-2B | [🤗 HuggingFace](https://huggingface.co/RecursiveMAS/Mixture-Summarizer-Qwen3.5-2B) |
+| Mixture-Outerlinks | [🤗 HuggingFace](https://huggingface.co/RecursiveMAS/Mixture-Outerlinks) |
+
+### [Distillation-Style MAS Collection](https://huggingface.co/collections/RecursiveMAS/distillation-style-recursivemas)
+
+| **Model Organization** | **Download** |
+| ---------------------- | ------------ |
+| Distillation-Expert-Qwen3.5-9B | [🤗 HuggingFace](https://huggingface.co/RecursiveMAS/Distillation-Expert-Qwen3.5-9B) |
+| Distillation-Learner-Qwen3.5-4B | [🤗 HuggingFace](https://huggingface.co/RecursiveMAS/Distillation-Learner-Qwen3.5-4B) |
+| Distillation-Outerlinks | [🤗 HuggingFace](https://huggingface.co/RecursiveMAS/Distillation-Outerlinks) |
+
+### [Deliberation-Style MAS Collection](https://huggingface.co/collections/RecursiveMAS/deliberation-style-recursivemas)
+
+| **Model Organization** | **Download** |
+| ---------------------- | ------------ |
+| Deliberation-Reflector-Qwen3.5-4B | [🤗 HuggingFace](https://huggingface.co/RecursiveMAS/Deliberation-Reflector-Qwen3.5-4B) |
+| Deliberation-Toolcaller-Qwen3.5-4B | [🤗 HuggingFace](https://huggingface.co/RecursiveMAS/Deliberation-Toolcaller-Qwen3.5-4B) |
+| Deliberation-Outerlinks | [🤗 HuggingFace](https://huggingface.co/RecursiveMAS/Deliberation-Outerlinks) |
+
+
+Here is an example of how to load the whole MAS pipeline:
+
+```python
+from system_loader import load_mas_system
+
+mas = load_mas_system(
+    style="sequential_light",
+    device="cuda",
+    trust_remote_code=True,
+)
+
+planner = mas.agents["planner"].model
+critic = mas.agents["critic"].model
+solver = mas.agents["solver"].model
+```
+
+Detailed running code for loading agents and running RecursiveMAS on downstream tasks is provided in `run.py`. 
+
+
 ### 🔍 Clone the Repository
 
-First, clone our repository and enter the project directory:
+Next, clone our repository and enter the project directory:
 
 ```bash
 git clone https://github.com/RecursiveMAS/RecursiveMAS.git
@@ -117,6 +174,7 @@ RecursiveMAS/
 ├── load_from_repo.py
 ├── hf_resolver.py
 ├── modeling.py
+├── system_loader.py
 ├── prompts.py
 ├── requirements.txt
 ├── assets/
@@ -125,7 +183,7 @@ RecursiveMAS/
     ├── __init__.py
     ├── answer_utils.py
     ├── lcb_utils.py
-    ├── reflection_tool_notes.py
+    ├── reflector_tool_notes.py
     ├── inference_mas.py
     ├── inference_mas_mixture.py
     ├── inference_mas_distill.py
@@ -138,6 +196,7 @@ The key components are:
 - `load_from_repo.py`: maps each MAS style to our released Hugging Face checkpoints and dataset defaults.
 - `hf_resolver.py`: resolves and load the Hugging Face checkpoints.
 - `modeling.py`: implements RecursiveLink modules.
+- `system_loader.py`: provides a high-level API for loading a full released multi-agent system.
 - `prompts.py`: stores prompts for different MAS collaboration styles.
 - `inference_utils/`: contains inference pipelines and evaluation utilities for different MAS structures.
 
@@ -182,11 +241,11 @@ python run.py --style deliberation --batch_size 16 --temperature 0.6 --top_p 0.9
 
 ## 🙏 Acknowledgements
 
-This project is built upon the excellent open-source ecosystem of large language models. We sincerely thank the developers and maintainers of the following libraries and resources:
+This project is built upon the excellent open-source community. We sincerely thank the developers and maintainers of the following libraries and resources:
 
-- [Hugging Face Transformers](https://github.com/huggingface/transformers) for providing flexible and widely used model loading and generation utilities.
 - [vLLM](https://github.com/vllm-project/vllm) for supporting efficient LLM inference and serving.
-- [Hugging Face Hub](https://huggingface.co/) for hosting model checkpoints and enabling convenient checkpoint distribution.
+- [ARPO](https://github.com/RUC-NLPIR/ARPO) for providing useful references on agentic tool-use systems and efficient tool-calling workflows.
+- [TextGrad](https://github.com/zou-group/textgrad) for its pioneering framework on text-based optimization and natural-language feedback for compound agentic systems.
 
 ---
 <!-- 
