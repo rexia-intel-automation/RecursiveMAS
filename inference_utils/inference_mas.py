@@ -65,16 +65,13 @@ from prompts import (
 )
 from .lcb_utils import (
     build_code_reparse_suffix,
-    build_lcb_sample_meta,
     build_mbppplus_sample_meta,
     clean_raw_output,
     evaluate_generated_code,
     extract_python_code,
     is_code_eval_dataset,
-    is_lcb_dataset,
     is_mbppplus_dataset,
     load_mbppplus_records,
-    load_release_v6_records,
 )
 
 from modeling import (
@@ -91,6 +88,21 @@ _CHAT_TEMPLATE_IDS_FALLBACK_WARNED = False
 _GEN_TOP_K: Optional[int] = None
 _GEN_MIN_P: Optional[float] = None
 _GEN_REPETITION_PENALTY: float = 1.0
+
+RELEASE_RECOMMENDED_SETTINGS: Dict[Tuple[str, str], Dict[str, int]] = {
+    ("sequential_light", "math500"): {"seed": 42, "batch_size": 32, "latent_length": 48},
+    ("sequential_light", "medqa"): {"seed": 42, "batch_size": 16, "latent_length": 32},
+    ("sequential_light", "gpqa"): {"seed": 42, "batch_size": 16, "latent_length": 32},
+    ("sequential_light", "mbppplus"): {"seed": 42, "batch_size": 16, "latent_length": 16},
+    ("sequential_scaled", "math500"): {"seed": 42, "batch_size": 16, "latent_length": 32},
+    ("sequential_scaled", "medqa"): {"seed": 42, "batch_size": 16, "latent_length": 48},
+    ("sequential_scaled", "gpqa"): {"seed": 42, "batch_size": 16, "latent_length": 48},
+    ("sequential_scaled", "mbppplus"): {"seed": 42, "batch_size": 16, "latent_length": 16},
+}
+
+
+def get_release_recommended_settings(style: str, dataset: str) -> Optional[Dict[str, int]]:
+    return RELEASE_RECOMMENDED_SETTINGS.get((str(style).lower(), str(dataset).lower()))
 
 
 def resolve_dtype(dtype_str: str):
@@ -111,18 +123,10 @@ def resolve_dataset(name: str) -> Tuple[str, Optional[str]]:
         return "openai/gsm8k", "main"
     if key in {"math500", "math-500", "huggingfaceh4/math-500"}:
         return "HuggingFaceH4/MATH-500", None
-    if key in {"aime25", "aime2025", "math-ai/aime25"}:
-        return "math-ai/aime25", None
-    if key in {"aime24", "aime2024", "aime_2024", "huggingfaceh4/aime_2024"}:
-        return "HuggingFaceH4/aime_2024", None
-    if key in {"aime26", "aime2026", "matharena/aime_2026"}:
-        return "MathArena/aime_2026", None
     if is_medqa_dataset(key):
         return "__local_medqa__", None
     if is_gpqa_dataset(key):
         return "Idavidrein/gpqa", "gpqa_diamond"
-    if is_lcb_dataset(key):
-        return "__lcb_v6__", None
     if is_mbppplus_dataset(key):
         return "__mbppplus__", None
     return name, None
@@ -207,30 +211,6 @@ def load_eval_questions_and_answers(
         dataset_name = "__local_medqa__"
 
     sample_metadata: Optional[List[Dict[str, Any]]] = None
-
-    if dataset_name == "__lcb_v6__":
-        records = load_release_v6_records()
-        if len(records) == 0:
-            raise ValueError("Loaded LiveCodeBench release_v6 records are empty.")
-
-        if shuffle:
-            rng = random.Random(seed)
-            rng.shuffle(records)
-        if num_samples > 0:
-            records = records[: min(num_samples, len(records))]
-
-        questions: List[str] = []
-        gold_answers: List[str] = []
-        sample_metadata = []
-        for row in records:
-            meta = build_lcb_sample_meta(row, use_private_tests=lcb_use_private_tests)
-            questions.append(str(meta["question"]))
-            gold_answers.append(str(meta.get("gold_answer", "")))
-            sample_metadata.append(meta)
-
-        if return_metadata:
-            return "livecodebench_v6", questions, gold_answers, sample_metadata
-        return "livecodebench_v6", questions, gold_answers
 
     if dataset_name == "__mbppplus__":
         records = load_mbppplus_records(

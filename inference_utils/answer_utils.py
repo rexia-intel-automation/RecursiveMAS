@@ -8,18 +8,6 @@ import torch
 
 _GSM8K_KEYS = {"gsm8k", "openai/gsm8k"}
 _MATH500_KEYS = {"math500", "math-500", "huggingfaceh4/math-500"}
-_AIME_KEYS = {
-    "aime24",
-    "aime2024",
-    "aime_2024",
-    "huggingfaceh4/aime_2024",
-    "aime25",
-    "aime2025",
-    "math-ai/aime25",
-    "aime26",
-    "aime2026",
-    "matharena/aime_2026",
-}
 _MEDQA_KEYS = {
     "medqa",
     "local/medqa",
@@ -59,10 +47,6 @@ def _is_gsm8k_dataset(name: str) -> bool:
 
 def _is_math500_dataset(name: str) -> bool:
     return _dataset_key(name) in _MATH500_KEYS
-
-
-def _is_aime_dataset(name: str) -> bool:
-    return _dataset_key(name) in _AIME_KEYS
 
 
 def is_medqa_dataset(name: str) -> bool:

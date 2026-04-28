@@ -219,9 +219,8 @@ We provide Sequential-style RecursiveMAS under both lightweight and scaled setti
 
 - **Sequential-style (Light)** uses lightweight agents for efficient recursive collaboration.
 ```bash
-python run.py --style sequential_light --batch_size 16 --temperature 0.6 --top_p 0.95 --dataset math500 --seed 42 --trust_remote_code 1 --device cuda
+python run.py --style sequential_light --batch_size 32 --temperature 0.6 --top_p 0.95 --dataset math500 --seed 42 --trust_remote_code 1 --device cuda
 ```
-
 
 - **Sequential-style (Scaled)** uses stronger LLM agents to further improve reasoning performance.
 ```bash

@@ -46,13 +46,13 @@ class RunCapture:
 def build_parser() -> argparse.ArgumentParser:
     p = argparse.ArgumentParser(description="Release inference runner for RecursiveMAS HF checkpoints.")
     p.add_argument("--style", required=True, choices=list(STYLE_SPECS.keys()))
-    p.add_argument("--dataset", required=True, default="math500", choices=["math500", "gpqa", "medqa", "mbppplus"])
+    p.add_argument("--dataset", required=True, default="math500", choices=["math500", "medqa", "gpqa", "mbppplus"])
     p.add_argument("--dataset_split", default="")
     p.add_argument("--seed", type=int, default=42)
     p.add_argument("--sample_seed", type=int, default=-1)
     p.add_argument("--num_recursive_rounds", type=int, default=3)
     p.add_argument("--batch_size", type=int, default=8)
-    p.add_argument("--latent_length", type=int, default=-1)
+    p.add_argument("--latent_length", type=int, default=32)
     p.add_argument("--temperature", type=float, default=0.6)
     p.add_argument("--top_p", type=float, default=0.95)
     p.add_argument("--top_k", type=int, default=-1)
@@ -85,6 +85,39 @@ def resolve_latent_steps(explicit: int) -> Tuple[int, ...]:
     if explicit is not None and explicit > 0:
         return (explicit,)
     return LATENT_STEPS_SWEEP
+
+
+def _has_cli_flag(flag: str) -> bool:
+    return flag in sys.argv[1:]
+
+
+def apply_recommended_settings(args: argparse.Namespace) -> None:
+    recommended = inference_mas.get_release_recommended_settings(args.style, args.dataset)
+    if recommended is None:
+        return
+
+    field_to_flag = {
+        "seed": "--seed",
+        "batch_size": "--batch_size",
+        "latent_length": "--latent_length",
+    }
+    mismatches: List[str] = []
+    for field_name, flag in field_to_flag.items():
+        recommended_value = recommended[field_name]
+        explicit = _has_cli_flag(flag)
+        current_value = getattr(args, field_name)
+        if not explicit:
+            setattr(args, field_name, recommended_value)
+            continue
+        if current_value != recommended_value:
+            mismatches.append(f"{field_name}={recommended_value}")
+
+    if mismatches:
+        joined = ", ".join(mismatches)
+        print(
+            f"[note] We recommend to use provided settings to run "
+            f"{args.style} on {args.dataset}: {joined}"
+        )
 
 
 def resolve_style_paths(style: str, dataset: str) -> Dict[str, Path]:
@@ -295,6 +328,7 @@ def main() -> int:
     os.environ.setdefault("MAS_FORCE_DISABLE_TORCHVISION", "1")
 
     args = build_parser().parse_args()
+    apply_recommended_settings(args)
     repo_root = Path(__file__).resolve().parent
     dataset_arg = resolve_medqa_dataset_arg(args.dataset, repo_root)
     dataset_split = infer_dataset_split(args.dataset, args.dataset_split)
