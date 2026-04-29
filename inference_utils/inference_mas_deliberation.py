@@ -36,6 +36,10 @@ from prompts import (
 
 TOOL_RE = re.compile(r"<(python|search)>\s*(.*?)\s*</\1>", re.DOTALL | re.IGNORECASE)
 UNCLOSED_TOOL_RE = re.compile(r"<(python|search)>(?!.*</\1>)", re.DOTALL | re.IGNORECASE)
+DEFAULT_TAVILY_SEARCH_DEPTH = "advanced"
+DEFAULT_TAVILY_MAX_RESULTS = 4
+_TAVILY_CLIENT = None
+_TAVILY_FALLBACK_NOTED = False
 
 @dataclass(frozen=True)
 class ToolCall:
@@ -426,6 +430,90 @@ def run_search_tool(query: str, max_chars: int) -> str:
     return truncate_result(result, max_chars)
 
 
+def note_tavily_fallback(reason: str) -> None:
+    global _TAVILY_FALLBACK_NOTED
+    if _TAVILY_FALLBACK_NOTED:
+        return
+    print(f"[note] {reason}; falling back to dummy search.", file=sys.stderr)
+    _TAVILY_FALLBACK_NOTED = True
+
+
+def get_tavily_api_key() -> str:
+    api_key = str(os.environ.get("TAVILY_API_KEY", "")).strip()
+    if api_key:
+        return api_key
+
+    repo_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+    env_path = os.path.join(repo_root, ".env")
+    if not os.path.isfile(env_path):
+        return ""
+
+    try:
+        with open(env_path, "r", encoding="utf-8") as f:
+            for raw_line in f:
+                line = raw_line.strip()
+                if not line or line.startswith("#") or "=" not in line:
+                    continue
+                key, value = line.split("=", 1)
+                if key.strip() != "TAVILY_API_KEY":
+                    continue
+                api_key = value.strip().strip("'\"")
+                if api_key:
+                    os.environ["TAVILY_API_KEY"] = api_key
+                    return api_key
+    except OSError:
+        return ""
+    return ""
+
+
+def get_tavily_client():
+    global _TAVILY_CLIENT
+    if _TAVILY_CLIENT is None:
+        from tavily import TavilyClient
+        _TAVILY_CLIENT = TavilyClient(api_key=get_tavily_api_key())
+    return _TAVILY_CLIENT
+
+
+def run_tavily_search_tool(query: str, max_chars: int) -> str:
+    api_key = get_tavily_api_key()
+    if not api_key or api_key == "xxx":
+        note_tavily_fallback("Tavily API key is missing")
+        return run_search_tool(query, max_chars)
+
+    try:
+        client = get_tavily_client()
+    except Exception as exc:
+        note_tavily_fallback(f"Tavily import/init failed: {exc}")
+        return run_search_tool(query, max_chars)
+
+    try:
+        response = client.search(
+            query=query,
+            search_depth=DEFAULT_TAVILY_SEARCH_DEPTH,
+        )
+    except Exception as exc:
+        return truncate_result(f"[search error] {type(exc).__name__}: {exc}", max_chars)
+
+    lines = [f"Query: {query}"]
+    results = response.get("results") or []
+    if results:
+        lines.append("Results:")
+    for idx, item in enumerate(results[:DEFAULT_TAVILY_MAX_RESULTS], start=1):
+        title = str(item.get("title") or "").strip()
+        url = str(item.get("url") or "").strip()
+        content = compact_whitespace(str(item.get("content") or "").strip())
+        if len(content) > 320:
+            content = content[:320].rstrip() + " ..."
+        lines.append(f"[{idx}] {title}")
+        if url:
+            lines.append(f"URL: {url}")
+        if content:
+            lines.append(content)
+    if not results:
+        lines.append("[no search results]")
+    return truncate_result("\n".join(lines), max_chars)
+
+
 def execute_tool_call(tool_call: ToolCall, args: argparse.Namespace) -> str:
     if tool_call.name == "python":
         return run_python_tool(
@@ -435,7 +523,7 @@ def execute_tool_call(tool_call: ToolCall, args: argparse.Namespace) -> str:
             echo_last_expr_flag=args.echo_last_expr,
             max_chars=args.result_max_chars,
         )
-    return run_search_tool(tool_call.content, args.result_max_chars)
+    return run_tavily_search_tool(tool_call.content, args.result_max_chars)
 
 
 def apply_next_tool_if_present(state: ToolLoopState, args: argparse.Namespace) -> bool:
