@@ -73,9 +73,6 @@ Please set up a search API key (e.g., a Tavily API key) in `.env` file:
 TAVILY_API_KEY=your_tavily_api_key_here
 ```
 
----
-
-
 ## 💥 Quick Start
 
 ### 🤖 Load Model Checkpoints
@@ -193,8 +190,6 @@ The key components are:
 - `prompts.py`: stores prompts for different MAS collaboration styles.
 - `inference_utils/`: contains inference pipelines and evaluation utilities for different MAS structures.
 
----
-
 ### ⚙️ Running RecursiveMAS at Different Scales
 
 We provide Sequential-style RecursiveMAS under both lightweight and scaled settings.
@@ -208,7 +203,6 @@ python run.py --style sequential_light --batch_size 32 --temperature 0.6 --top_p
 ```bash
 python run.py --style sequential_scaled --batch_size 16 --temperature 0.6 --top_p 0.95 --dataset math500 --seed 42 --trust_remote_code 1 --device cuda
 ```
----
 
 ### 🧩 Exploring Various Collaboration Patterns
 
@@ -229,8 +223,6 @@ python run.py --style distillation --batch_size 16 --temperature 0.6 --top_p 0.9
 python run.py --style deliberation --batch_size 16 --temperature 0.6 --top_p 0.95 --dataset math500 --seed 42 --trust_remote_code 1 --device cuda
 ```
 
----
-
 ## 🙏 Acknowledgements
 
 This project is built upon the excellent open-source community. We sincerely thank the developers and maintainers of the following libraries and resources:
@@ -239,7 +231,6 @@ This project is built upon the excellent open-source community. We sincerely tha
 - [ARPO](https://github.com/RUC-NLPIR/ARPO) for providing useful references on agentic tool-use systems and efficient tool-calling workflows.
 - [TextGrad](https://github.com/zou-group/textgrad) for its pioneering framework on text-based optimization and natural-language feedback for compound agentic systems.
 
----
 <!-- 
 ## 🚀 Contributing
 
