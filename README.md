@@ -18,7 +18,7 @@ Scaling agent collaboration through latent-space recursion.
     <a href="https://huggingface.co/RecursiveMAS/models"><img src="https://img.shields.io/badge/Huggingface-Models-FFD21E.svg?logo=huggingface" alt="Huggingface Model"></a>
 </p>
 
----
+
 
 <p align="center">
   <video src="assets/demo.mp4" controls loop playsinline width="95%" aria-label="RecursiveMAS demo">
