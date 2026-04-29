@@ -20,6 +20,11 @@ Scaling agent collaboration through latent-space recursion.
 
 ---
 
+<p align="center">
+  <video src="assets/demo.mp4" controls loop playsinline width="95%" aria-label="RecursiveMAS demo">
+  </video>
+</p>
+
 ## 📰 News
 
 - **[2026.04.28]** RecursiveMAS paper released! The evaluation [code](https://github.com/RecursiveMAS/RecursiveMAS) and [checkpoints](https://huggingface.co/RecursiveMAS/models) are now available. Stay tuned for the overall training pipeline and more features!
