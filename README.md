@@ -97,11 +97,11 @@ Install the required packages:
 pip install -r requirements.txt
 ```
 
-For Deliberation-Style, the Tool-Caller Agent requires external search tools to retrieve information. Please set up a Tavily API key in `.env` file:
+For Deliberation-Style, the Tool-Caller Agent requires external search tools to retrieve information. 
+Please set up a search API key (e.g., a Tavily API key) in `.env` file:
 ```bash
-TAVILY_API_KEY=xxx
+TAVILY_API_KEY=your_tavily_api_key_here
 ```
-
 
 ---
 
