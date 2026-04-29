@@ -25,60 +25,32 @@ Scaling agent collaboration through latent-space recursion.
 
 ## 📰 News
 
-- **[2026.04.28]** RecursiveMAS paper released! The evaluation [code](https://github.com/RecursiveMAS/RecursiveMAS) and [checkpoints](https://huggingface.co/RecursiveMAS/models) are now available. Stay tuned for the overall training pipeline and more features!
+**[2026.04.28]** All [collaboration styles](https://huggingface.co/RecursiveMAS/collections), [model checkpoints](https://huggingface.co/RecursiveMAS/models), and [downstream evaluations](https://github.com/RecursiveMAS/RecursiveMAS) are now available. Stay tuned for the complete training/inference pipeline and additional features!
+
+**[2026.04.28]** We have released the [RecursiveMAS paper](https://huggingface.co/papers/2604.25917)! 
+
 
 ## 🌟 Introduction
 
 <p align="center">
-  <img src="assets/overview.png" width="95%" alt="RecursiveMAS Overview">
+  <img src="assets/exps.png" width="95%" alt="RecursiveMAS Overview">
 </p>
 
-**RecursiveMAS** is a multi-agent framework that scales agent collaboration through **latent-space recursion**.
+**RecursiveMAS** is a multi-agent framework that scales agent collaboration through **latent-space recursion**. Instead of treating each LLM agent as an isolated module, RecursiveMAS casts the entire multi-agent system as a **unified recursive computation**. Heterogeneous agents are connected through lightweight RecursiveLink modules, allowing agents to iteratively exchange, refine, and evolve their latent states across recursion rounds.
 
-<p align="center">
-  <img src="assets/learning.png" width="95%" alt="RecursiveMAS Training">
-</p>
+## 📋 Supported Features
 
-Instead of treating each LLM agent as an isolated module, RecursiveMAS casts the entire multi-agent system as a **unified recursive computation**. Heterogeneous agents are connected through lightweight RecursiveLink modules, allowing agents to iteratively exchange, refine, and evolve their latent states across recursion rounds.
+✅ Release All Collaboration Patterns (Sequential, Mixture, Deliberation, Distillation).
 
-## ✨ Key Features of RecursiveMAS
+✅ Release Demo Code for Inference (Commands Provided Below).
 
-- **System-level recursion**: RecursiveMAS organizes the entire multi-agent system as a recursive loop, where agents repeatedly refine the shared latent information flow across recursion rounds.
+☑️ Add Complete Inference Pipeline Across All Downstreams.
 
-- **Inner and Outer RecursiveLink**: RecursiveMAS uses lightweight residual projection modules to support both agent-level latent-thoughts generation and cross-agent latent information transfer.
+☑️ Add All Training Data & Implementation Details.
 
-- **Generalizable collaboration patterns**: RecursiveMAS can be seamlessly adapted to diverse MAS structures, including Sequential-style, Mixture-style, Distillation-style, and Deliberation-style collaboration.
+☑️ Add Additional Supported Model Family & MAS Collaboration Patterns.
 
-- **Strong and efficient performance**: Across 9 benchmarks, RecursiveMAS achieves an average accuracy improvement of 8.3%, together with 1.2×–2.4× end-to-end inference speedup and 34.6%–75.6% token usage reduction.
-
-
----
-
-## 📊 Experiments
-
-### 🚀 RecursiveMAS Scales Performance and Generalization
-
-RecursiveMAS demonstrates a clear scaling trend across both training-time and inference-time recursion depths. Additionally, RecursiveMAS also generalizes to diverse MAS collaboration patterns.
-
-<p align="center">
-  <img src="assets/hero_fig.png" width="95%" alt="RecursiveMAS Main Results">
-</p>
-
-
----
-
-### ⚡ Superior Efficiency of RecursiveMAS
-
-Compared with Recursive-TextMAS under the same MAS structure and recursion budget, RecursiveMAS achieves increasing inference-time speedup as the recursion depth becomes larger.
-
-<p align="center">
-  <img src="assets/efficiency.png" width="95%" alt="RecursiveMAS Efficiency">
-</p>
-
-
----
-
-## 🛠️ Experiment Setup
+## 🛠️ Environment Setup
 
 This repository provides the code for running RecursiveMAS under different multi-agent collaboration styles. 
 
