@@ -33,7 +33,7 @@ Scaling agent collaboration through latent-space recursion.
 ## 🌟 Introduction
 
 <p align="center">
-  <img src="assets/exps.png" width="95%" alt="RecursiveMAS Overview">
+  <img src="assets/exps.png" width="100%" alt="RecursiveMAS Overview">
 </p>
 
 **RecursiveMAS** is a multi-agent framework that scales agent collaboration through **latent-space recursion**. Instead of treating each LLM agent as an isolated module, RecursiveMAS casts the entire multi-agent system as a **unified recursive computation**. Heterogeneous agents are connected through lightweight RecursiveLink modules, allowing agents to iteratively exchange, refine, and evolve their latent states across recursion rounds.
