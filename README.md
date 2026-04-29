@@ -19,10 +19,8 @@ Scaling agent collaboration through latent-space recursion.
 </p>
 
 
-
 <p align="center">
-  <video src="assets/demo.mp4" controls loop playsinline width="95%" aria-label="RecursiveMAS demo">
-  </video>
+  <video src="https://github.com/user-attachments/assets/9c09261a-c9e7-4851-8462-eeda69989b4e" controls width="200"></video>
 </p>
 
 ## 📰 News
