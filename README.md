@@ -20,7 +20,7 @@ Scaling agent collaboration through latent-space recursion.
 
 
 <p align="center">
-  <video src="https://github.com/user-attachments/assets/9c09261a-c9e7-4851-8462-eeda69989b4e" controls width="200"></video>
+  <video src="https://github.com/user-attachments/assets/9c09261a-c9e7-4851-8462-eeda69989b4e" controls width="300"></video>
 </p>
 
 ## 📰 News
