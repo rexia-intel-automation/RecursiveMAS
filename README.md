@@ -25,7 +25,7 @@ Scaling agent collaboration through latent-space recursion.
 </p>
 
 ## 📰 News
-**[2026.05.01]** Ours paper is featured as [🤗 HuggingFace 1st Paper of the Day](https://huggingface.co/papers/2604.25917)!
+**[2026.05.01]** Ours paper is featured as [🤗 HuggingFace 1st Paper of the Week/Day](https://huggingface.co/papers/2604.25917)!
 
 **[2026.04.28]** All [collaboration styles](https://huggingface.co/RecursiveMAS/collections) and [model checkpoints](https://huggingface.co/RecursiveMAS/models), with [examplified downstream inference](https://github.com/RecursiveMAS/RecursiveMAS) are now available. Stay tuned for the complete training/inference pipeline and additional features!
 
