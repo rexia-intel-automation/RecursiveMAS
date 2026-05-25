@@ -17,6 +17,7 @@ Scaling agent collaboration through latent-space recursion.
     <a href="https://huggingface.co/RecursiveMAS/collections"><img src="https://img.shields.io/badge/Huggingface-Collections-FFD21E.svg?logo=huggingface" alt="Huggingface Collection"></a>
     <a href="https://huggingface.co/RecursiveMAS/models"><img src="https://img.shields.io/badge/Huggingface-Models-FFD21E.svg?logo=huggingface" alt="Huggingface Model"></a>
     <a href="https://x.com/Jiaru_Zou/status/2049551828296389118"><img src="https://img.shields.io/badge/Twitter-Coverage-1DA1F2.svg?logo=x" alt="Twitter Coverage"></a>
+    <a href="https://venturebeat.com/ai/how-recursivemas-speeds-up-multi-agent-inference-by-2-4x-and-reduces-token-usage-by-75"><img src="https://img.shields.io/badge/Venture-Beat-EE1C25.svg?labelColor=111111&color=EE1C25&logo=venturebeat&logoColor=white" alt="VentureBeat Coverage"></a>
 </p>
 
 
@@ -25,6 +26,9 @@ Scaling agent collaboration through latent-space recursion.
 </p>
 
 ## 📰 News
+
+**[2026.05.24]** Check out the [VentureBeat article](https://t.co/KSQwBwpC4W) featuring our research on RecursiveMAS!
+
 **[2026.05.01]** Ours paper is featured as [🤗 HuggingFace 1st Paper of the Week/Day](https://huggingface.co/papers/2604.25917)!
 
 **[2026.04.28]** All [collaboration styles](https://huggingface.co/RecursiveMAS/collections) and [model checkpoints](https://huggingface.co/RecursiveMAS/models), with [examplified downstream inference](https://github.com/RecursiveMAS/RecursiveMAS) are now available. Stay tuned for the complete training/inference pipeline and additional features!
