@@ -109,20 +109,69 @@ Papéis: **Planner** (decompõe) · **Critic** (julga/refina) · **Solver** (ger
 
 ---
 
-## 5. Os outros 3 estilos (papéis × vertentes)
+## 5. Matrizes dos outros 3 estilos (papéis por célula)
 
-**Mixture** (4 paralelos + agregador):
-| Papel | V1 (pequeno cheio) | V2/V3 (quantizado) |
-|---|---|---|
-| Math | `deepseek-r1-distill-qwen-1.5b` | reasoning maior @4bit |
-| Code | `Seed-Coder-8B` (MIT) | **`qwen3-coder-30b-a3b`@4bit (V3)** |
-| Science/Med | `medgemma-4b` (ctx 128k) / `meerkat-7b` | `medgemma-27b`@4bit / `gemma-4-26b-a4b`@8bit |
-| Summarizer | `qwen3-1.7b` | `qwen3-8b`@4bit |
-- Co-residência 4 agentes → **≥16GB; 8GB inviável.** Melhor estilo para o eixo **denso×MoE** (Code/Science têm MoE e denso bons).
+GPU$ derivado do Sequential pelo multiplicador de estilo: **Mixture ×1,4 · Distillation ×0,6 · Deliberation ×0,7**. Células inviáveis por co-residência marcadas `—`.
 
-**Distillation** (Expert + Learner): Expert `qwen3-8b`→`qwen3-32b`@4bit conforme tier; Learner `qwen3-4b` fixo. **2 agentes → folgado; é o estilo que melhor isola V1 vs V2.**
+### 5.1 Mixture (Math ∥ Code ∥ Science/Med → Summarizer; 4 agentes co-residentes)
 
-**Deliberation** (Reflector + Tool-Caller): ambos `qwen3-4b`→maiores conforme tier; **+ Tavily** no eval (custo de busca C6 $0–100).
+| Tier | V | Math | Code | Science/Med | Summarizer | GPU$ |
+|---|---|---|---|---|---|---|
+| **8GB** | — | inviável (4 agentes não cabem) | | | | — |
+| **16GB** | V1 | `r1-distill-1.5b` | `qwen2.5-coder-3b`† | `qwen3-1.7b` | `qwen3-1.7b` | $5,9 |
+| | V2 | `r1-distill-7b`@4bit | `Seed-Coder-8B`@4bit | `qwen3-4b`@4bit | `qwen3-1.7b`@4bit | $7,6 |
+| | V3 | — (MoE não co-fit) | | | | — |
+| **24GB** | V1 | `r1-distill-1.5b` | `Seed-Coder-8B`‡ | `medgemma-4b` | `qwen3-1.7b` | $11,2 |
+| | V2 | `r1-distill-7b`@4bit | `Seed-Coder-8B`@4bit | `qwen3-8b`@4bit | `qwen3-4b`@4bit | $15,7 |
+| | V3 | `r1-1.5b`@4bit | **`qwen3-coder-30b-a3b`@4bit** | `qwen3-1.7b`@4bit | `qwen3-1.7b`@4bit | $13,4 |
+| **32GB** | V1 | `r1-distill-1.5b` | `Seed-Coder-8B` | `qwen3-4b` | `qwen3-1.7b` | $21,8 |
+| | V2 | `r1-distill-7b`@4bit | `Seed-Coder-8B`@8bit | `qwen3-8b`@8bit | `qwen3-4b`@4bit | $30,2 |
+| | V3 | `r1-1.5b`@4bit | `qwen3-coder-30b-a3b`@4bit | `gemma-4-26b-a4b`@4bit | `qwen3-1.7b`@4bit | $25,2 |
+| **48GB** | V1 | `r1-distill-1.5b` | `Seed-Coder-8B` | `qwen3-8b` | `qwen3-4b` | $38,1 |
+| | V2 | `r1-distill-7b`@4bit | `qwen2.5-coder-32b`@4bit | `qwen3-14b`@4bit | `qwen3-4b`@4bit | $59,5 |
+| | V3 | `r1-1.5b`@4bit | `qwen3-coder-30b-a3b`@4bit | `gemma-4-26b-a4b`@4bit | `qwen3-1.7b`@4bit | $47,6 |
+
+† `qwen2.5-coder-3b` é **licença não-comercial** — só em teste/pesquisa; senão usar coder geral pequeno. ‡ `Seed-Coder-8B` fp16 em 24GB é apertado com os outros 3 — co-residência no limite. **É o estilo ideal pro eixo denso×MoE** (Code/Science têm MoE e denso bons).
+
+### 5.2 Distillation (Expert + Learner; 2 agentes — folgado)
+
+**Melhor estilo para isolar V1 × V2:** Expert pequeno-cheio vs Expert grande-quantizado, com Learner controlado.
+
+| Tier | V | Expert | Learner | GPU$ |
+|---|---|---|---|---|
+| **8GB** | V1 | `qwen3-1.7b` | `qwen3-0.6b` | $0,9 |
+| | V2 | `qwen3-4b`@4bit | `qwen3-1.7b`@4bit | $1,1 |
+| **16GB** | V1 | `qwen3-4b` | `qwen3-1.7b` | $2,5 |
+| | V2 | `qwen3-8b`@4bit | `qwen3-4b`@4bit | $3,2 |
+| **24GB** | V1 | `qwen3-8b` | `qwen3-1.7b` | $4,8 |
+| | V2 | `qwen3-14b`@4bit | `qwen3-4b`@4bit | $6,7 |
+| | V3 | `gemma-4-26b-a4b`@4bit | `qwen3-1.7b`@4bit | $5,8 |
+| **32GB** | V1 | `qwen3-8b` | `qwen3-4b` | $9,4 |
+| | V2 | `qwen3.5-27b`@4bit | `qwen3-4b`@4bit | $13,0 |
+| | V3 | `gemma-4-26b-a4b`@8bit | `qwen3-4b`@4bit | $10,8 |
+| **48GB** | V1 | `qwen3-14b` | `qwen3-4b` | $16,3 |
+| | V2 | `qwen3-32b`@4bit | `qwen3-8b`@4bit | $25,5 |
+| | V3 | `gemma-4-26b-a4b`@8bit | `qwen3-8b`@4bit | $20,4 |
+
+### 5.3 Deliberation (Reflector + Tool-Caller + Tavily; 2 agentes)
+
+| Tier | V | Reflector | Tool-Caller | GPU$ |
+|---|---|---|---|---|
+| **8GB** | V1 | `qwen3-1.7b` | `qwen3-1.7b` | $1,1 |
+| | V2 | `qwen3-4b`@4bit | `qwen3-4b`@4bit | $1,3 |
+| **16GB** | V1 | `qwen3-4b` | `qwen3-1.7b` | $2,9 |
+| | V2 | `qwen3-8b`@4bit | `qwen3-8b`@4bit | $3,8 |
+| **24GB** | V1 | `qwen3-4b` | `qwen3-4b` | $5,6 |
+| | V2 | `qwen3-14b`@4bit | `qwen3-8b`@4bit | $7,8 |
+| | V3 | `gemma-4-26b-a4b`@4bit | `qwen3-1.7b`@4bit | $6,7 |
+| **32GB** | V1 | `qwen3-8b` | `qwen3-4b` | $10,9 |
+| | V2 | `qwen3.5-27b`@4bit | `qwen3-8b`@4bit | $15,1 |
+| | V3 | `gemma-4-26b-a4b`@8bit | `qwen3-1.7b`@4bit | $12,6 |
+| **48GB** | V1 | `qwen3-8b` | `qwen3-8b` | $19,0 |
+| | V2 | `qwen3-32b`@4bit | `qwen3-14b`@4bit | $29,8 |
+| | V3 | `gemma-4-26b-a4b`@4bit | `nemotron-30b-a3b`@4bit | $23,8 |
+
+Tool-Caller precisa de **tool-calling confiável** (Qwen3 atende) + `TAVILY_API_KEY`. **Tavily** no eval = custo de busca **$0–100** sobre o braço todo (não por célula).
 
 ---
 
@@ -140,7 +189,7 @@ Papéis: **Planner** (decompõe) · **Critic** (julga/refina) · **Solver** (ger
 - Estilos: **todos os 4** (Distillation/Mixture são os mais informativos para V1×V2 e denso×MoE).
 - N de treino: **2k** (sobe pra 20k só se quiser fidelidade ao paper).
 - 8-bit: sub-caso de V2/V3, não vertente nova.
-- Cobertura: **âncoras 24/32/48GB completas + 8/16GB como piso** (corta ~40% das células sem perder a curva).
+- Cobertura: **todas as 5 tiers (8/16/24/32/48GB)** apresentadas; células inviáveis por co-residência marcadas `—` (§2, §5).
 
 ## 8. Hipóteses que o estudo testa
 
